@@ -2,8 +2,6 @@
 
 from tkinter import * 
 import tkinter as tk   
-# from tkinter import Tk, Label, X, Frame, Y, LEFT, BOTH
-
 from tkinter import ttk
 from functools import partial
 
