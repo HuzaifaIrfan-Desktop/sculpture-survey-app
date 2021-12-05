@@ -4,9 +4,6 @@ import tkinter as tk
 from tkinter import ttk
 from functools import partial
 
-import base64
-    
-
 
 class Admin_Panel():
 
@@ -15,8 +12,6 @@ class Admin_Panel():
       
         self.admin_tab = ttk.Frame(tabControl)
         tabControl.add(self.admin_tab, text ='Admin Panel')
-
-  
 
         self.frames = {}
         for F in (Register_Frame,Login_Frame,Admin_Frame,Settings_Frame):
@@ -40,34 +35,6 @@ class Admin_Panel():
         frame.tkraise()
 
 
-        # ttk.Label(self.admin_tab, text="Admin Panel", font=('Lucida 15')).grid(column = 0, row = 0, padx = 30, pady = 30)
-
-
-        # # Initialize frames
-        # f1 = Frame(self.admin_tab, bg="grey")
-        # f2 = Frame(self.admin_tab, bg="pink")
-
-        # # Initialize labels
-        # w1 = Label(f1, text="Red", bg="red", fg="white")
-        # w2 = Label(f1, text="Green", bg="green", fg="white")
-        # w3 = Label(f1, text="Blue", bg="blue", fg="white")
-        # w1b = Label(f2, text="Red", bg="red", fg="white")
-        # w2b = Label(f2, text="Green", bg="green", fg="white")
-        # w3b = Label(f2, text="Blue", bg="blue", fg="white")
-
-        # # Packing level 1
-        # f1.pack(fill=BOTH, expand=True)
-        # f2.pack(fill=BOTH, expand=True)
-
-        # # Packing level 2
-        # w1.pack(fill=X)
-        # w2.pack(fill=X)
-        # w3.pack(fill=X)
-        # w1b.pack(side=LEFT, fill=BOTH, expand=True)
-        # w2b.pack(side=LEFT, fill=BOTH, expand=True)
-        # w3b.pack(side=LEFT, fill=BOTH, expand=True)
-
-
 class Register_Frame(Frame):
 
     def __init__(self, parent, controller, db):
@@ -78,7 +45,8 @@ class Register_Frame(Frame):
         self.admin_tab=parent
 
         
-
+        
+        Label(self, text="Register", font=('Lucida 15')).pack()
 
 
         #password label and password entry box
@@ -142,24 +110,21 @@ class Login_Frame(Frame):
         self.db=db
         self.controller=controller
 
+        Label(self, text="Login Page", font=('Lucida 15')).pack()
 
         #password label and password entry box
-        self.passwordLabel = Label(self,text="Password") 
-        self.passwordLabel.pack()
+        self.passwordLabel = Label(self,text="Password").pack()
         self.password = StringVar()
-        self.passwordEntry = Entry(self, textvariable=self.password, show='*') 
-        self.passwordEntry.pack()
+        self.passwordEntry = Entry(self, textvariable=self.password, show='*').pack()
 
         validateLogin = partial(self.validateLogin, self.password)
         #login button
-        self.loginButton = Button(self, text="Login", command=validateLogin)
-        self.loginButton.pack()
+        self.loginButton = Button(self, text="Login", command=validateLogin).pack()
 
 
      
         self.ValidationText = StringVar(value="")
-        self.ValidationLabel = Label(self, textvariable=self.ValidationText)
-        self.ValidationLabel.pack()
+        self.ValidationLabel = Label(self, textvariable=self.ValidationText).pack()
         self.ValidationText.set("Error")
 
     
@@ -200,20 +165,17 @@ class Admin_Frame(Frame):
         self.controller=controller
 
         self.admin_tab=parent
+        Label(self, text="Admin Panel", font=('Lucida 15')).pack()
 
 
         #Logout button
-        self.logoutButton = Button(self, text="Logout", command=lambda : self.controller.show_frame(Login_Frame))
-        self.logoutButton.pack()
+        self.logoutButton = Button(self, text="Logout", command=lambda : self.controller.show_frame(Login_Frame)).pack()
 
-        self.settingsButton = Button(self, text="Settings", command=lambda : self.controller.show_frame(Settings_Frame))
-        self.settingsButton.pack()
+        self.settingsButton = Button(self, text="Settings", command=lambda : self.controller.show_frame(Settings_Frame)).pack()
 
      
         self.ValidationText = StringVar(value="")
-        self.ValidationLabel = Label(self, textvariable=self.ValidationText)
-        
-        self.ValidationLabel.pack()
+        self.ValidationLabel = Label(self, textvariable=self.ValidationText).pack()
 
 
 class Settings_Frame(Frame):
@@ -223,64 +185,52 @@ class Settings_Frame(Frame):
         self.db=db
         self.controller=controller
 
+
         self.admin_tab=parent
+
+        Label(self, text="Settings", font=('Lucida 15')).pack()
 
 
         #Logout button
-        self.logoutButton = Button(self, text="Logout", command=lambda : self.controller.show_frame(Login_Frame))
-        self.logoutButton.pack()
+        self.logoutButton = Button(self, text="Logout", command=lambda : self.controller.show_frame(Login_Frame)).pack()
 
-        self.adminButton = Button(self, text="Admin Panel", command=lambda : self.controller.show_frame(Admin_Frame))
-        self.adminButton.pack()
+        self.adminButton = Button(self, text="Admin Panel", command=lambda : self.controller.show_frame(Admin_Frame)).pack()
 
 
-        self.passwordLabel = Label(self,text="Password")
-        self.passwordLabel.pack()
+        self.passwordLabel = Label(self,text="Password").pack()
         self.password = StringVar()
-        self.passwordTextbox = Entry(self, textvariable=self.password, show='*')
-        self.passwordTextbox.pack()
+        self.passwordTextbox = Entry(self, textvariable=self.password, show='*').pack()
 
-        self.changepasswordLabel = Label(self,text="Change Password")
-        self.changepasswordLabel.pack()
+        self.changepasswordLabel = Label(self,text="Change Password").pack()
 
-        self.newpasswordLabel = Label(self,text="New Password")
-        self.newpasswordLabel.pack()
+        self.newpasswordLabel = Label(self,text="New Password").pack()
         self.newpassword = StringVar()
-        self.newpasswordTextbox = Entry(self, textvariable=self.newpassword, show='*')
-        self.newpasswordTextbox.pack()
+        self.newpasswordTextbox = Entry(self, textvariable=self.newpassword, show='*').pack()
 
-        self.retypenewpasswordLabel = Label(self,text="Retype New Password")
-        self.retypenewpasswordLabel.pack()
+        self.retypenewpasswordLabel = Label(self,text="Retype New Password").pack()
         self.retypenewpassword = StringVar()
-        self.retypenewpasswordTextbox = Entry(self, textvariable=self.retypenewpassword, show='*')
-        self.retypenewpasswordTextbox.pack()
+        self.retypenewpasswordTextbox = Entry(self, textvariable=self.retypenewpassword, show='*').pack()
 
         changepassword = partial(self.changepassword, self.password,self.newpassword,self.retypenewpassword)
-        self.changepassword_Button = Button(self, text="Change Password", command=changepassword)
-        self.changepassword_Button.pack()
+        self.changepassword_Button = Button(self, text="Change Password", command=changepassword).pack()
 
 
 
 
 
-        self.DangerLabel = Label(self,text="Danger")
-        self.DangerLabel.pack()
+        self.DangerLabel = Label(self,text="Danger").pack()
 
 
         resetdatabase = partial(self.resetdatabase, self.password)
-        self.resetdatabase_Button = Button(self, text="Reset Database", command=resetdatabase)
-        self.resetdatabase_Button.pack()
+        self.resetdatabase_Button = Button(self, text="Reset Database", command=resetdatabase).pack()
 
         deletesurveys = partial(self.deletesurveys, self.password)
-        self.deletesurveys_Button = Button(self, text="Delete Surveys", command=deletesurveys)
-        self.deletesurveys_Button.pack()
+        self.deletesurveys_Button = Button(self, text="Delete Surveys", command=deletesurveys).pack()
 
 
      
         self.ValidationText = StringVar(value="")
-        self.ValidationLabel = Label(self, textvariable=self.ValidationText)
-        
-        self.ValidationLabel.pack()
+        self.ValidationLabel = Label(self, textvariable=self.ValidationText).pack()
 
     def validatePassword(self, passwd):
         password=passwd.get()

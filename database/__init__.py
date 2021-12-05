@@ -1,4 +1,6 @@
 import sqlite3
+import hashlib
+import os
 
 class Database:
 
@@ -27,7 +29,8 @@ class Database:
 
         sql = 'create table if not exists ' + self.admin_table + ''' 
          (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                  password varchar(20) NOT NULL)
+                  salt BLOB NOT NULL,  
+                  password BLOB NOT NULL)
         '''
 
 
@@ -67,11 +70,27 @@ class Database:
         self.conn.commit()
 
 
-
     def check_admin_password(self,password):
         cursor = self.c.execute(f'select * from {self.admin_table};')
         for passwd in cursor.fetchall():
-            if(passwd[1]==password):
+            
+            salt=bytes.fromhex(passwd[1])   
+            print(salt)
+            key=bytes.fromhex(passwd[2])   
+            print(key)
+
+            new_key = hashlib.pbkdf2_hmac(
+                'sha256', # The hash digest algorithm for HMAC
+                password.encode('utf-8'), # Convert the password to bytes
+                salt, # Provide the salt
+                100000, # It is recommended to use at least 100,000 iterations of SHA-256 
+                dklen=128 # Get a 128 byte key
+            )
+            print(new_key)
+
+
+            if(key==new_key):
+
                 return True
         
         return False
@@ -80,9 +99,26 @@ class Database:
 
     def set_admin_password(self,password):
         self.clear_admin_password()
+
+        salt = os.urandom(32)
+        
+
+        # Remember this
+
+        key = hashlib.pbkdf2_hmac(
+            'sha256', # The hash digest algorithm for HMAC
+            password.encode('utf-8'), # Convert the password to bytes
+            salt, # Provide the salt
+            100000, # It is recommended to use at least 100,000 iterations of SHA-256 
+            dklen=128 # Get a 128 byte key
+        )
+        print(salt)
+        print(key)
+
+
         sql = f'''
-        INSERT INTO {self.admin_table} (password)
-VALUES ("{password}");
+        INSERT INTO {self.admin_table} (password,salt)
+VALUES ("{key.hex()}", "{salt.hex()}");
         '''
         self.c.execute(sql)
 
