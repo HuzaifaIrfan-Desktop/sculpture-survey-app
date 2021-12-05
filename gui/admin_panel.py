@@ -1,23 +1,33 @@
-
 from tkinter import * 
-import tkinter as tk                 
+import tkinter as tk   
 from tkinter import ttk
 from functools import partial
 
-
-class Admin_Panel():
+class Admin_Panel(Frame):
 
     def __init__(self, parent, tabControl,db):
+        super().__init__(parent)
         self.db=db
-      
-        self.admin_tab = ttk.Frame(tabControl)
+
+
+        self.admin_tab = Frame(tabControl)
         tabControl.add(self.admin_tab, text ='Admin Panel')
+
+        
+        self.admin_tab.grid_rowconfigure(0, weight=1) 
+        self.admin_tab.grid_columnconfigure(0, weight=1) 
+
+
+        # self.admin_tab.configure(background='black')
+
 
         self.frames = {}
         for F in (Register_Frame,Login_Frame,Admin_Frame,Settings_Frame):
             frame = F(self.admin_tab,self, db)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky='nsew')
+            frame.grid_rowconfigure(0, weight = 1)
+            frame.grid_columnconfigure(0, weight = 1)
 
 
 
@@ -49,28 +59,33 @@ class Register_Frame(Frame):
         Label(self, text="Register", font=('Lucida 15')).pack()
 
 
+        
+        f1 = Frame(self, bg="grey")
+        f1.pack(fill=BOTH, expand=True)
+
+
         #password label and password entry box
-        self.passwordLabel = Label(self,text="Password")
+        self.passwordLabel = Label(f1,text="Password")
         self.passwordLabel.pack()
         self.password = StringVar()
-        self.passwordTextbox = Entry(self, textvariable=self.password, show='*')
+        self.passwordTextbox = Entry(f1, textvariable=self.password, show='*')
         self.passwordTextbox.pack()
 
-        self.retypepasswordLabel = Label(self,text="Retype Password")
+        self.retypepasswordLabel = Label(f1,text="Retype Password")
         self.retypepasswordLabel.pack()
         self.retypepassword = StringVar()
-        self.retypepasswordTextbox = Entry(self, textvariable=self.retypepassword, show='*')
+        self.retypepasswordTextbox = Entry(f1, textvariable=self.retypepassword, show='*')
         self.retypepasswordTextbox.pack()
 
         validateRegister = partial(self.validateRegister, self.password,self.retypepassword)
 
         #login button
-        self.loginButton = Button(self, text="Create Admin Password", command=validateRegister)
+        self.loginButton = Button(f1, text="Create Admin Password", command=validateRegister)
         self.loginButton.pack()
 
      
         self.ValidationText = StringVar(value="")
-        self.ValidationLabel = Label(self, textvariable=self.ValidationText)
+        self.ValidationLabel = Label(f1, textvariable=self.ValidationText)
         
         self.ValidationLabel.pack()
 
@@ -110,22 +125,31 @@ class Login_Frame(Frame):
         self.db=db
         self.controller=controller
 
-        Label(self, text="Login Page", font=('Lucida 15')).pack()
+
+        
+        f1 = Frame(self)
+        f1.place(anchor="c", relx=.5, rely=.5)
+        # f1.pack(fill=BOTH, expand=True)
+
+        self.configure(background='black')
+
+
+        Label(f1, text="Login Page", font=('Lucida 15')).pack()
 
         #password label and password entry box
-        self.passwordLabel = Label(self,text="Password").pack()
+        self.passwordLabel = Label(f1,text="Password").pack()
         self.password = StringVar()
-        self.passwordEntry = Entry(self, textvariable=self.password, show='*').pack()
+        self.passwordEntry = Entry(f1, textvariable=self.password, show='*').pack()
 
         validateLogin = partial(self.validateLogin, self.password)
         #login button
-        self.loginButton = Button(self, text="Login", command=validateLogin).pack()
+        self.loginButton = Button(f1, text="Login", command=validateLogin).pack()
 
 
      
         self.ValidationText = StringVar(value="")
-        self.ValidationLabel = Label(self, textvariable=self.ValidationText).pack()
-        self.ValidationText.set("Error")
+        self.ValidationLabel = Label(f1, textvariable=self.ValidationText).pack()
+        self.ValidationText.set("")
 
     
         

@@ -19,7 +19,8 @@ class GUI(tk.Tk):
         super().__init__(*args, **kwargs)
 
     
-        self.db = Database(database_filename)    
+        self.db = Database(database_filename)
+        # self.minsize(1080, 720)    
         self.geometry("1080x720")
 
 
@@ -27,7 +28,7 @@ class GUI(tk.Tk):
 
 
 
-
+        
 
 
 
@@ -37,15 +38,14 @@ class GUI(tk.Tk):
 
         self.tabControl = ttk.Notebook(self)
 
-       
+
+   
+        User_Panel(self, self.tabControl,self.db)  
         Admin_Panel(self, self.tabControl,self.db)
-        User_Panel(self, self.tabControl,self.db)
-
-        self.tabControl.pack(expand = 1, fill ="both")
 
 
-        # main_frame.grid_rowconfigure(0, weight=1)
-        # main_frame.grid_columnconfigure(0, weight=1)
+        self.tabControl.pack(expand=True, fill ="both")
+
 
         # self.bkgr_image = tk.PhotoImage(file=self.BKGR_IMAGE_PATH)
 
