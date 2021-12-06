@@ -18,10 +18,18 @@ class Database:
 
     def create_database(self):
 
+
         sql = 'create table if not exists ' + self.survey_table + ''' 
          (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                  first_name varchar(20) NOT NULL,
-                  last_name varchar(20) NOT NULL)
+                  firstname varchar(20) NOT NULL,
+                  lastname varchar(20) NOT NULL,
+                  age int NOT NULL,
+                  gender int NOT NULL,
+                  ethnicity int NOT NULL,
+                  disbaledValue int NOT NULL,
+                  enjoyedValue int NOT NULL,
+                  curiousValue int NOT NULL,
+                  scienceValue int NOT NULL)
 
         '''
 
@@ -29,8 +37,8 @@ class Database:
 
         sql = 'create table if not exists ' + self.admin_table + ''' 
          (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                  salt BLOB NOT NULL,  
-                  password BLOB NOT NULL)
+                  salt varchar(64) NOT NULL,  
+                  key varchar(256) NOT NULL)
         '''
 
 
@@ -58,11 +66,27 @@ class Database:
         self.conn.commit()
 
 
-    def insert_survey(self, id):
-        sql = 'insert into ' + self.survey_table + ' (id) values (%d)' % (id)
+
+    def save_survey(self, firstname, lastname, age, gender, ethnicity, disbaledValue, enjoyedValue, curiousValue, scienceValue):
+        sql = 'insert into ' + self.survey_table + f'''
+        (firstname, lastname, age, gender, ethnicity, disbaledValue, enjoyedValue, curiousValue, scienceValue) values ("{firstname}", "{lastname}", {age}, {gender}, {ethnicity}, {disbaledValue}, {enjoyedValue}, {curiousValue}, {scienceValue})
+        
+        '''
         self.c.execute(sql)
-        print('Inserted ', id)
+        # print('Inserted ', firstname, lastname, age, gender, ethnicity, disbaledValue, enjoyedValue, curiousValue, scienceValue)
         self.conn.commit()
+
+    def get_all_surveys(self):
+        cursor = self.c.execute(f'select * from {self.survey_table};')
+        records = cursor.fetchall()
+        # print("Total rows are:  ", len(records))
+
+        return records
+
+ 
+
+        
+
 
 
     def clear_admin_password(self):
@@ -75,9 +99,9 @@ class Database:
         for passwd in cursor.fetchall():
             
             salt=bytes.fromhex(passwd[1])   
-            print(salt)
+            # print(salt)
             key=bytes.fromhex(passwd[2])   
-            print(key)
+            # print(key)
 
             new_key = hashlib.pbkdf2_hmac(
                 'sha256', # The hash digest algorithm for HMAC
@@ -86,7 +110,7 @@ class Database:
                 100000, # It is recommended to use at least 100,000 iterations of SHA-256 
                 dklen=128 # Get a 128 byte key
             )
-            print(new_key)
+            # print(new_key)
 
 
             if(key==new_key):
@@ -112,13 +136,13 @@ class Database:
             100000, # It is recommended to use at least 100,000 iterations of SHA-256 
             dklen=128 # Get a 128 byte key
         )
-        print(salt)
-        print(key)
+        # print(salt)
+        # print(key)
 
 
         sql = f'''
-        INSERT INTO {self.admin_table} (password,salt)
-VALUES ("{key.hex()}", "{salt.hex()}");
+        INSERT INTO {self.admin_table} (salt,key)
+VALUES ("{salt.hex()}", "{key.hex()}");
         '''
         self.c.execute(sql)
 

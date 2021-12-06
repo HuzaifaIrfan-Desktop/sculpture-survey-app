@@ -8,6 +8,7 @@ from .admin_panel import Admin_Panel
 from .user_panel import User_Panel
 
 
+
 class GUI(tk.Tk):
 
 
@@ -15,12 +16,12 @@ class GUI(tk.Tk):
     BKGR_IMAGE_PATH = 'gui/img/survey_bg.png'
 
 
-    def __init__(self,database_filename, *args, **kwargs):
+    def __init__(self,database_filename='db.sqlite3',fullscreen=False, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
     
         self.db = Database(database_filename)
-        # self.minsize(1080, 720)    
+        self.minsize(1080, 720)    
         self.geometry("1080x720")
 
 
@@ -29,11 +30,17 @@ class GUI(tk.Tk):
 
 
         
+        if fullscreen:
+            self.attributes('-fullscreen',True)
+        else:
+            self.state('zoomed')
+
+        # self.attributes('-fullscreen',False)
+        # self.state('zoomed')
+        
 
 
 
-        self.state('zoomed')
-        # self.attributes('-fullscreen',True)
 
 
         self.tabControl = ttk.Notebook(self)
@@ -46,14 +53,12 @@ class GUI(tk.Tk):
 
         self.tabControl.pack(expand=True, fill ="both")
 
-
-        # self.bkgr_image = tk.PhotoImage(file=self.BKGR_IMAGE_PATH)
-
-
-
-    def run_mainloop(self):
+    def bring_to_front(self):
         self.lift()
         self.attributes('-topmost', True)
+
+    def run_mainloop(self):
+        self.bring_to_front()
         self.mainloop() 
 
 
