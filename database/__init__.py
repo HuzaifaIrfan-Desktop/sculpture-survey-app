@@ -12,6 +12,8 @@ class Database:
         self.c = self.conn.cursor()
         self.survey_table = 'survey'
         self.admin_table = 'admin'
+        self.settings_table = 'settings'
+        
 
         # self.clear_database()
         self.create_database()
@@ -26,13 +28,19 @@ class Database:
                   age int NOT NULL,
                   gender int NOT NULL,
                   ethnicity int NOT NULL,
-                  disbaledValue int NOT NULL,
-                  enjoyedValue int NOT NULL,
-                  curiousValue int NOT NULL,
-                  scienceValue int NOT NULL)
+                  disabled int NOT NULL,
+                  enjoyed int NOT NULL,
+                  curious int NOT NULL,
+                  science int NOT NULL)
 
-        '''
+        '''   
+        self.c.execute(sql)
 
+        sql = 'create table if not exists ' + self.settings_table + ''' 
+         (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  key varchar(20) UNIQUE NOT NULL,
+                  value varchar(20) NOT NULL)
+        '''   
         self.c.execute(sql)
 
         sql = 'create table if not exists ' + self.admin_table + ''' 
@@ -49,6 +57,8 @@ class Database:
 
     def drop_tables(self):
         sql = 'drop table IF EXISTS ' + self.survey_table
+        self.c.execute(sql)
+        sql = 'drop table IF EXISTS ' + self.settings_table
         self.c.execute(sql)
         sql = 'drop table IF EXISTS ' + self.admin_table
         self.c.execute(sql)
@@ -67,13 +77,13 @@ class Database:
 
 
 
-    def save_survey(self, firstname, lastname, age, gender, ethnicity, disbaledValue, enjoyedValue, curiousValue, scienceValue):
+    def save_survey(self, firstname, lastname, age, gender, ethnicity, disabled, enjoyed, curious, science):
         sql = 'insert into ' + self.survey_table + f'''
-        (firstname, lastname, age, gender, ethnicity, disbaledValue, enjoyedValue, curiousValue, scienceValue) values ("{firstname}", "{lastname}", {age}, {gender}, {ethnicity}, {disbaledValue}, {enjoyedValue}, {curiousValue}, {scienceValue})
+        (firstname, lastname, age, gender, ethnicity, disabled, enjoyed, curious, science) values ("{firstname}", "{lastname}", {age}, {gender}, {ethnicity}, {disabled}, {enjoyed}, {curious}, {science})
         
         '''
         self.c.execute(sql)
-        # print('Inserted ', firstname, lastname, age, gender, ethnicity, disbaledValue, enjoyedValue, curiousValue, scienceValue)
+        # print('Inserted ', firstname, lastname, age, gender, ethnicity, disabled, enjoyed, curious, science)
         self.conn.commit()
 
     def get_all_surveys(self):
@@ -84,8 +94,49 @@ class Database:
         return records
 
  
+    def get_gender_count(self,gender):
+        self.c.execute(f"select count() from {self.survey_table} where gender={gender}")
+        return int(self.c.fetchone()[0])
 
+    def get_ethnicity_count(self,ethnicity):
+        self.c.execute(f"select count() from {self.survey_table} where ethnicity={ethnicity}")
+        return int(self.c.fetchone()[0])
+
+    def get_disabled_count(self,disabled):
+        self.c.execute(f"select count() from {self.survey_table} where disabled={disabled}")
+        return int(self.c.fetchone()[0])
+
+    def get_enjoyed_count(self,enjoyed):
+        self.c.execute(f"select count() from {self.survey_table} where enjoyed={enjoyed}")
+        return int(self.c.fetchone()[0])
+
+    def get_curious_count(self,curious):
+        self.c.execute(f"select count() from {self.survey_table} where curious={curious}")
+        return int(self.c.fetchone()[0])
+
+    def get_science_count(self,science):
+        self.c.execute(f"select count() from {self.survey_table} where science={science}")
+        return int(self.c.fetchone()[0])
+
+
+    def set_settings(self,key,value):
+
+        self.c.execute(f'''INSERT OR REPLACE INTO {self.settings_table} (key, value) VALUES("{key}", "{value}");''')
+        self.conn.commit()
+
+    
         
+    def get_settings(self,key):
+        self.c.execute(f"select (value) from {self.settings_table} where key='{key}'")
+        try:
+            return(self.c.fetchone()[0])
+        except:
+             self.set_settings(key,'1')
+             return '1'
+
+        # return 
+    
+    
 
 
 

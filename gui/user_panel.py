@@ -8,6 +8,9 @@ from tkinter import ttk
 from functools import partial
 from tkinter import messagebox
 from .survey_format import survey_format
+from pathlib import Path
+
+ASSETS_PATH = Path(__file__).resolve().parent / "assets"
 
 class User_Panel(Frame):
 
@@ -17,23 +20,41 @@ class User_Panel(Frame):
 
 
         self.user_tab = Frame(tabControl)
-        tabControl.add(self.user_tab, text ='Survey Form')
+        tabControl.add(self.user_tab, text ='Singing Sculpture Survey')
+        self.user_tab.configure(background="#3A7FF6")
 
 
-        Label(self.user_tab, text="Survey Form", font=('Lucida 15')).pack(side='top')
+
         
-        f1 = Frame(self.user_tab)
-        f1.pack()
+  
+        f11 = Frame(self.user_tab,bg="#3A7FF6")
+        f11.pack(fill=BOTH,side=LEFT,padx=20,pady=20)
 
-        Label(f1,text="Your feedback helps us improve your experience.").pack()
+ 
+
+         
+        Label(f11,bg="#3A7FF6", text="Singing Sculpture Survey", font=("Arial",30)).pack(side='top')
 
 
-        Label(f1,text="Name").pack()
 
-       
-        Label(f1,text="First Name").pack()
+        Label(f11, font=('Lucida 15'),bg="#3A7FF6",text="Your feedback helps us improve your experience.").pack()
+
+
+
+        
+        f1 = Frame(f11,bg="#3A7FF6")
+        f1.pack(side=LEFT,padx=20,pady=20)
+
+
+
+
+        # Label(f1, font=('Lucida 15'),bg="#3A7FF6",text="Name").pack()
+
+
+
+        Label(f1, font=('Lucida 10'),bg="#3A7FF6",text="First Name").pack()
         self.firstname = StringVar()
-        Entry(f1, textvariable=self.firstname).pack()
+        Entry(f1, font=('Lucida 10'), textvariable=self.firstname).pack(pady=(0, 5))
         def firstname_validation(*args):
             firstnamestr=self.firstname.get()
             valid_firstname=""
@@ -47,9 +68,9 @@ class User_Panel(Frame):
 
 
 
-        Label(f1,text="Last Name").pack()
+        Label(f1, font=('Lucida 10'),bg="#3A7FF6",text="Last Name").pack()
         self.lastname = StringVar()
-        Entry(f1, textvariable=self.lastname).pack()
+        Entry(f1, font=('Lucida 10'), textvariable=self.lastname).pack(pady=(0, 5))
 
         def lastname_validation(*args):
             lastnamestr=self.lastname.get()
@@ -63,9 +84,9 @@ class User_Panel(Frame):
         self.lastname.trace("w", lastname_validation)
 
 
-        Label(f1,text="Age").pack()
+        Label(f1, font=('Lucida 10'),bg="#3A7FF6",text="Age").pack()
         self.age = StringVar()
-        Entry(f1, textvariable=self.age).pack()
+        Entry(f1, font=('Lucida 10'), textvariable=self.age).pack(pady=(0, 5))
         def age_validation(*args):
             agestr=self.age.get()
             valid_age=""
@@ -82,22 +103,22 @@ class User_Panel(Frame):
 
 
 
-        Label(f1,text="Gender").pack()
-        f2 = Frame(f1)
-        f2.pack()
+        Label(f1, font=('Lucida 10'),bg="#3A7FF6",text="Gender").pack()
+        f2 = Frame(f1,bg="#3A7FF6")
+        f2.pack(pady=(0, 5))
         self.gender = IntVar()
         for key,value in survey_format['gender']['values'].items():
-            Radiobutton(f2,text=value, value=key, variable=self.gender).grid(column=key, row=0)
+            Radiobutton(f2, font=('Lucida 10'),bg="#3A7FF6",text=value, value=key, variable=self.gender).grid(column=key, row=0)
 
         
 
-        Label(f1,text="Ethnicity").pack()
-        self.ethnicity = ttk.Combobox(f1, state="readonly")
+        Label(f1, font=('Lucida 10'),bg="#3A7FF6",text="Ethnicity").pack()
+        self.ethnicity = ttk.Combobox(f1, font=('Lucida 10'), state="readonly")
         self.ethnicity['values']=('---',)
         for key, lst in survey_format['ethnicity']['values'].items():
             self.ethnicity['values'] = self.ethnicity['values'] + (lst,)
         self.ethnicity.current(0)
-        self.ethnicity.pack()
+        self.ethnicity.pack(pady=(0, 5))
 
 
     
@@ -105,50 +126,68 @@ class User_Panel(Frame):
             
 
 
-        Label(f1,text="Disbaled").pack()
-        f3 = Frame(f1)
-        f3.pack()
-        self.disbaledValue = IntVar()
+        Label(f1, font=('Lucida 10'),bg="#3A7FF6",text="Disabled").pack()
+        f3 = Frame(f1,bg="#3A7FF6")
+        f3.pack(pady=(0, 5))
+        self.disabled = IntVar()
         for key,value in survey_format['disabled']['values'].items():
-            Radiobutton(f3,text=value, value=key, variable=self.disbaledValue).grid(column=key, row=0)
+            Radiobutton(f3, font=('Lucida 10'),bg="#3A7FF6",text=value, value=key, variable=self.disabled).grid(column=key, row=0)
 
 
 
-        Label(f1,text="Did you enjoy the sculpture?").pack()
-        f4 = Frame(f1)
-        f4.pack()
-        self.enjoyedValue = IntVar()
+        Label(f1, font=('Lucida 10'),bg="#3A7FF6",text="Did you enjoy the sculpture?").pack()
+        f4 = Frame(f1,bg="#3A7FF6")
+        f4.pack(pady=(0, 5))
+        self.enjoyed = IntVar()
         for key,value in survey_format['enjoyed']['values'].items():
-            Radiobutton(f4,text=value, value=key, variable=self.enjoyedValue).grid(column=key, row=0)
+            Radiobutton(f4, font=('Lucida 10'),bg="#3A7FF6",text=value, value=key, variable=self.enjoyed).grid(column=key, row=0)
 
 
 
 
-        Label(f1,text="Are you curious about knowing more?").pack()
-        f5 = Frame(f1)
-        f5.pack()
-        self.curiousValue = IntVar()
+        Label(f1, font=('Lucida 10'),bg="#3A7FF6",text="Are you curious about knowing more?").pack()
+        f5 = Frame(f1,bg="#3A7FF6")
+        f5.pack(pady=(0, 5))
+        self.curious = IntVar()
         for key,value in survey_format['curious']['values'].items():
-            Radiobutton(f5,text=value, value=key, variable=self.curiousValue).grid(column=key, row=0)
+            Radiobutton(f5, font=('Lucida 10'),bg="#3A7FF6",text=value, value=key, variable=self.curious).grid(column=key, row=0)
 
         
-        Label(f1,text="Do you want to know more science behind it?").pack()
-        f6 = Frame(f1)
-        f6.pack()
-        self.scienceValue = IntVar()
+        Label(f1, font=('Lucida 10'),bg="#3A7FF6",text="Do you want to know more science behind it?").pack()
+        f6 = Frame(f1,bg="#3A7FF6")
+        f6.pack(pady=(0, 5))
+        self.science = IntVar()
         for key,value in survey_format['science']['values'].items():
-            Radiobutton(f6,text=value, value=key, variable=self.scienceValue).grid(column=key, row=0)
+            Radiobutton(f6, font=('Lucida 10'),bg="#3A7FF6",text=value, value=key, variable=self.science).grid(column=key, row=0)
 
 
 
-        Button(f1, text="Submit", command=self.submit_survey).pack()
+        f12=Frame(f1,bg="#3A7FF6")
 
-        Button(f1, text="Clear", command=self.clear_form).pack()
+        Button(f12, font=('Lucida 15'), text="Submit", command=self.submit_survey).pack(side=LEFT,padx=10)
+
+        Button(f12, font=('Lucida 15'), text="Clear", command=self.clear_form).pack(side=LEFT,padx=10)
+        f12.pack(pady=10)
 
              
         self.ValidationText = StringVar(value="")
-        self.ValidationLabel = Label(f1, textvariable=self.ValidationText).pack()
+        self.ValidationLabel = Label(f1, font=('Lucida 10'),bg="#3A7FF6", textvariable=self.ValidationText).pack()
         self.ValidationText.set("")
+
+
+
+
+        f13=Frame(self.user_tab)
+
+        f13.picture = PhotoImage(file=ASSETS_PATH / "survey_bg.png")
+
+
+        f13.label = Label(f13, image=f13.picture)
+        f13.label.pack(expand=True)
+
+
+        f13.pack(expand=True)
+
 
 
 
@@ -161,11 +200,11 @@ class User_Panel(Frame):
         self.age.set('')
         self.gender.set(0)
         self.ethnicity.set('---')
-        self.disbaledValue.set(0)
-        self.enjoyedValue.set(0)
+        self.disabled.set(0)
+        self.enjoyed.set(0)
 
-        self.curiousValue.set(0)
-        self.scienceValue.set(0)
+        self.curious.set(0)
+        self.science.set(0)
 
         
 
@@ -217,31 +256,31 @@ class User_Panel(Frame):
             return False
 
 
-        disbaledValue=self.disbaledValue.get()
-        # print(disbaledValue)
-        if disbaledValue==0:
+        disabled=self.disabled.get()
+        # print(disabled)
+        if disabled==0:
             self.ValidationText.set('Please fill all fields')
             return False
 
 
-        enjoyedValue=self.enjoyedValue.get()
-        # print(enjoyedValue)
-        if enjoyedValue==0:
+        enjoyed=self.enjoyed.get()
+        # print(enjoyed)
+        if enjoyed==0:
             self.ValidationText.set('Please fill all fields')
             return False
 
 
 
-        curiousValue=self.curiousValue.get()
-        # print(curiousValue)
-        if curiousValue==0:
+        curious=self.curious.get()
+        # print(curious)
+        if curious==0:
             self.ValidationText.set('Please fill all fields')
             return False
 
 
-        scienceValue=self.scienceValue.get()
-        # print(scienceValue)
-        if scienceValue==0:
+        science=self.science.get()
+        # print(science)
+        if science==0:
             self.ValidationText.set('Please fill all fields')
             return False
 
@@ -250,7 +289,7 @@ class User_Panel(Frame):
         self.clear_form()
         self.ValidationText.set('Form Submitted Thank You for your Time.')
         
-        self.db.save_survey(firstname,lastname,age,gender,ethnicity,disbaledValue,enjoyedValue,curiousValue,scienceValue)
+        self.db.save_survey(firstname,lastname,age,gender,ethnicity,disabled,enjoyed,curious,science)
 
 
         
