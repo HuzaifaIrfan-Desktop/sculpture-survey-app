@@ -18,9 +18,13 @@ class Database:
         # self.clear_database()
         self.create_database()
 
+###########################
+## Database functions
+###########################
+
     def create_database(self):
 
-
+        ## Survey Table
         sql = 'create table if not exists ' + self.survey_table + ''' 
          (id INTEGER PRIMARY KEY AUTOINCREMENT,
                   firstname varchar(20) NOT NULL,
@@ -36,12 +40,16 @@ class Database:
         '''   
         self.c.execute(sql)
 
+        ## Settings Table
+
         sql = 'create table if not exists ' + self.settings_table + ''' 
          (id INTEGER PRIMARY KEY AUTOINCREMENT,
                   key varchar(20) UNIQUE NOT NULL,
                   value varchar(20) NOT NULL)
         '''   
         self.c.execute(sql)
+
+        ## Admin Passwords Table
 
         sql = 'create table if not exists ' + self.admin_table + ''' 
          (id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -56,6 +64,7 @@ class Database:
 
 
     def drop_tables(self):
+        ## Delete All Tables
         sql = 'drop table IF EXISTS ' + self.survey_table
         self.c.execute(sql)
         sql = 'drop table IF EXISTS ' + self.settings_table
@@ -67,17 +76,24 @@ class Database:
         
     
     def remake_database(self):
+        ## Delete and Create All Tables
         self.drop_tables()
         self.create_database()
 
 
     def clear_survey(self):
+        ## Empty Survey Table
         self.c.execute('DELETE FROM '+self.survey_table)
         self.conn.commit()
 
 
+###########################
+## Survey Table Functions
+###########################
+
 
     def save_survey(self, firstname, lastname, age, gender, ethnicity, disabled, enjoyed, curious, science):
+        ## Insert a Survey in Survey Table
         sql = 'insert into ' + self.survey_table + f'''
         (firstname, lastname, age, gender, ethnicity, disabled, enjoyed, curious, science) values ("{firstname}", "{lastname}", {age}, {gender}, {ethnicity}, {disabled}, {enjoyed}, {curious}, {science})
         
@@ -87,13 +103,18 @@ class Database:
         self.conn.commit()
 
     def get_all_surveys(self):
+        ## Get all Surveys from Survey Table
         cursor = self.c.execute(f'select * from {self.survey_table};')
         records = cursor.fetchall()
         # print("Total rows are:  ", len(records))
 
         return records
 
- 
+    
+
+    ## Statistical Count Survey Table
+
+
     def get_gender_count(self,gender):
         self.c.execute(f"select count() from {self.survey_table} where gender={gender}")
         return int(self.c.fetchone()[0])
@@ -118,6 +139,9 @@ class Database:
         self.c.execute(f"select count() from {self.survey_table} where science={science}")
         return int(self.c.fetchone()[0])
 
+###########################
+## Settings Table Functions
+###########################
 
     def set_settings(self,key,value):
 
@@ -134,11 +158,11 @@ class Database:
              self.set_settings(key,'1')
              return '1'
 
-        # return 
-    
-    
 
 
+###########################
+## Admin Table Functions
+###########################
 
     def clear_admin_password(self):
         self.c.execute('DELETE FROM '+self.admin_table)
@@ -149,11 +173,13 @@ class Database:
         cursor = self.c.execute(f'select * from {self.admin_table};')
         for passwd in cursor.fetchall():
             
+            ## Convert to Bytes
             salt=bytes.fromhex(passwd[1])   
             # print(salt)
             key=bytes.fromhex(passwd[2])   
             # print(key)
 
+            
             new_key = hashlib.pbkdf2_hmac(
                 'sha256', # The hash digest algorithm for HMAC
                 password.encode('utf-8'), # Convert the password to bytes
@@ -164,6 +190,8 @@ class Database:
             # print(new_key)
 
 
+
+            ## Check key Match
             if(key==new_key):
 
                 return True
@@ -178,7 +206,7 @@ class Database:
         salt = os.urandom(32)
         
 
-        # Remember this
+        ## Encrypt Password
 
         key = hashlib.pbkdf2_hmac(
             'sha256', # The hash digest algorithm for HMAC
@@ -191,6 +219,7 @@ class Database:
         # print(key)
 
 
+        ## Convert to Hex and Save 
         sql = f'''
         INSERT INTO {self.admin_table} (salt,key)
 VALUES ("{salt.hex()}", "{key.hex()}");
@@ -201,6 +230,8 @@ VALUES ("{salt.hex()}", "{key.hex()}");
 
 
     def empty_admin_password(self):
+
+        ## Check Admin Table if Empty to show register page 
 
         rowsQuery = f"SELECT Count() FROM {self.admin_table};"
         self.c.execute(rowsQuery)

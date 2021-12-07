@@ -12,8 +12,9 @@ from pathlib import Path
 
 ASSETS_PATH = Path(__file__).resolve().parent / "assets"
 
-
-
+###########################
+##  Register_Frame,Login_Frame,Admin_Frame,Settings_Frame Controller
+###########################
 class Admin_Panel(Frame):
 
     def __init__(self, parent, tabControl,db):
@@ -31,10 +32,6 @@ class Admin_Panel(Frame):
         self.admin_tab.grid_rowconfigure(0, weight=1) 
         self.admin_tab.grid_columnconfigure(0, weight=1) 
 
-
-        # self.admin_tab.configure(background='black')
-
-
         self.frames = {}
         for F in (Register_Frame,Login_Frame,Admin_Frame,Settings_Frame):
             frame = F(self.admin_tab,self, db)
@@ -44,9 +41,6 @@ class Admin_Panel(Frame):
             frame.grid_columnconfigure(0, weight = 1)
 
 
-
-
-
         if(self.db.empty_admin_password()):
             self.show_frame(Register_Frame)
             # print('RegisterPage')
@@ -54,13 +48,16 @@ class Admin_Panel(Frame):
             self.show_frame(Login_Frame)
             # print('LoginPage') 
 
-        self.show_frame(Admin_Frame)   
+        # self.show_frame(Admin_Frame)   
 
     def show_frame(self,container):
         frame = self.frames[container]
         frame.tkraise()
 
 
+###########################
+## Register Frame
+###########################
 class Register_Frame(Frame):
 
     def __init__(self, parent, controller, db):
@@ -76,21 +73,11 @@ class Register_Frame(Frame):
 
   
         f1 = Frame(self)
-        f1.place(anchor="c", relx=.5, rely=.5, height=500, width=500)
- 
         
-
-
-
-
         f11 = Frame(f1)
-        f11.place(anchor="c", relx=.5, rely=.5)
- 
         
 
-        Label(f11, text="Register", font=("Arial",30)).pack(fill=X, expand=False,padx=20, pady=20)
-        
-        
+        Label(f11, text="Register", font=("Arial",30)).pack(fill=X, expand=False,padx=20, pady=20) 
 
 
         #password label and password entry box
@@ -104,12 +91,19 @@ class Register_Frame(Frame):
 
         validateRegister = partial(self.validateRegister, self.password,self.retypepassword)
 
-        #login button
+        #Register button
         Button(f11, font=('Lucida 15'), text="Create Admin Password", command=validateRegister).pack(padx=10, pady=10)
 
      
         self.ValidationText = StringVar(value="")
         Label(f11, font=('Lucida 10'), textvariable=self.ValidationText).pack()
+
+
+        f11.place(anchor="c", relx=.5, rely=.5)
+
+        f1.place(anchor="c", relx=.5, rely=.5, height=500, width=500)
+
+
 
     def validateRegister(self, passwd,retypepasswd):
         password=passwd.get()
@@ -139,6 +133,10 @@ class Register_Frame(Frame):
         return False
 
 
+###########################
+## Login Frame
+###########################
+
 class Login_Frame(Frame):
 
     def __init__(self, parent, controller, db):
@@ -149,15 +147,10 @@ class Login_Frame(Frame):
         self.configure(background="#3A7FF6")
 
   
-        f1 = Frame(self)
-        f1.place(anchor="c", relx=.5, rely=.5, height=500, width=500)
- 
+        f1 = Frame(self) 
         
         f11 = Frame(f1)
-        f11.place(anchor="c", relx=.5, rely=.5)
- 
-        # f1.pack(fill=BOTH, expand=True)
-
+        
 
         Label(f11, text="Login", font=("Arial",30)).pack(fill=X, expand=False,padx=20, pady=20)
 
@@ -167,7 +160,7 @@ class Login_Frame(Frame):
         self.password = StringVar()
         Entry(f11, font=('Lucida 15'), textvariable=self.password, show='*').pack()
 
-        #login button
+        #Login button
         Button(f11, font=('Lucida 15'), text="Login", command=self.validateLogin).pack(padx=10, pady=10)
 
 
@@ -175,6 +168,10 @@ class Login_Frame(Frame):
         self.ValidationText = StringVar(value="")
         Label(f11, font=('Lucida 10'), textvariable=self.ValidationText).pack()
         self.ValidationText.set("")
+
+        f11.place(anchor="c", relx=.5, rely=.5)
+
+        f1.place(anchor="c", relx=.5, rely=.5, height=500, width=500)
 
     
         
@@ -204,7 +201,9 @@ class Login_Frame(Frame):
 
 
 
-
+###########################
+## Admin Frame
+###########################
 
 class Admin_Frame(Frame):
 
@@ -230,27 +229,18 @@ class Admin_Frame(Frame):
 
         self.headings = ('ID', 'Firstname', 'Lastname', 'Age', 'Gender', 'Ethnicity', 'Disabled', 'Enjoyed', 'Curious', 'Want to know more Science',)
         
-
-
-        #     print("Id: ", survey[0])
-        #     print("firstname: ", survey[1])
-        #     print("lastname: ", survey[2])
-        #     print("age: ", survey[3])
-        #     print("gender: ", survey[4])
-        #     print("ethnicity: ", survey[5])
-        #     print("disabled: ", survey[6])
-        #     print("enjoyed: ", survey[7])
-        #     print("curious: ", survey[8])
-        #     print("science: ", survey[9])
+        ###########################
+        ## Survey Table
+        ###########################
  
         f3 = Frame(self,bg='#3A7FF6')
 
 
-        label = tk.Label(f3,bg='#3A7FF6', text="Surveys", font=("Arial",30)).pack(fill=X, expand=False)
-        # create Treeview with 3 columns
+        Label(f3,bg='#3A7FF6', text="Surveys", font=("Arial",30)).pack(fill=X, expand=False)
+
         self.listBox = ttk.Treeview(f3, columns=self.headings, show='headings')
         
-        # set column headings
+        
         for n, col in enumerate(self.headings):
             self.listBox.column(n, anchor=CENTER, stretch=NO, width=100)
             self.listBox.heading(col, text=col) 
@@ -258,11 +248,6 @@ class Admin_Frame(Frame):
         self.listBox.column(0, anchor=CENTER, stretch=NO, width=50)  
         self.listBox.column(9, anchor=CENTER, stretch=NO, width=170)   
         self.listBox.pack(fill=BOTH, expand=True, padx=10, pady=10)
-
-        # h=Scrollbar(self.listBox, orient='vertical')
-        # h.pack(side=RIGHT, fill=Y)
-        # self.listBox.grid_configure(padx=10, pady=10)
-
 
         f3.pack(fill=BOTH, expand=True)
 
@@ -277,17 +262,8 @@ class Admin_Frame(Frame):
         f11 = Frame(f1,bg='#3A7FF6')
 
 
-        # def prop(n):
-        #     return 360.0 * n / 1000
 
-        # tk.Label(f11, text='Pie Chart').pack()
-        # c = tk.Canvas(f11,width=154, height=154)
-        # c.create_arc((2,2,152,152), fill="#FAF402", outline="#FAF402", start=prop(0), extent = prop(200))
-        # c.create_arc((2,2,152,152), fill="#2BFFF4", outline="#2BFFF4", start=prop(200), extent = prop(400))
-        # c.create_arc((2,2,152,152), fill="#E00022", outline="#E00022", start=prop(600), extent = prop(50))
-        # c.create_arc((2,2,152,152), fill="#7A0871", outline="#7A0871", start=prop(650), extent = prop(200))
-        # c.create_arc((2,2,152,152), fill="#294994", outline="#294994", start=prop(850), extent = prop(150))
-        # c.pack()
+        # Average Age Frame
 
 
 
@@ -298,10 +274,12 @@ class Admin_Frame(Frame):
         f111.pack(fill=BOTH, expand=True,side=LEFT)
 
 
+        #Gender Stats Table
+
 
         f112 = Frame(f11,bg='#3A7FF6')
         Label(f112, text='Gender',bg='#3A7FF6', font=('Lucida 15')).pack(side=TOP)
-        self.gender_table = ttk.Treeview(f112, column=("c1", "c2", ), show='headings')
+        self.gender_table = ttk.Treeview(f112, height=5, column=("c1", "c2", ), show='headings')
 
         self.gender_table.column(0, anchor=tk.CENTER)
 
@@ -325,23 +303,11 @@ class Admin_Frame(Frame):
 
 
 
-
-        # f112 = Frame(f11,bg='#3A7FF6')
-        # Label(f112, text='Gender',bg='#3A7FF6', font=('Lucida 15')).pack(side=TOP)
-        # self.GenderText={}
-        # for key,value in survey_format['gender']['values'].items():
-        #     f1121 = Frame(f112,bg='#3A7FF6')
-        #     Label(f1121, text=value,bg='#3A7FF6').pack(side=LEFT)
-        #     self.GenderText[key] = StringVar(value="")
-        #     Label(f1121, textvariable=self.GenderText[key],bg='#3A7FF6').pack(side=LEFT)
-        #     f1121.pack(side=TOP)
-        # f112.pack(fill=BOTH, expand=True,side=LEFT)
-
-
+        #Ethnicity Stats Table
 
         f113 = Frame(f11,bg='#3A7FF6')
         Label(f113, text='Ethnicity',bg='#3A7FF6', font=('Lucida 15')).pack(side=TOP)
-        self.ethnicity_table = ttk.Treeview(f113, column=("c1", "c2", ), show='headings')
+        self.ethnicity_table = ttk.Treeview(f113, height=5, column=("c1", "c2", ), show='headings')
 
         self.ethnicity_table.column(0, anchor=tk.CENTER)
 
@@ -365,23 +331,13 @@ class Admin_Frame(Frame):
 
 
 
-        # f113 = Frame(f11,bg='#3A7FF6')
-        # Label(f113, text='Ethnicity',bg='#3A7FF6', font=('Lucida 15')).pack(side=TOP)
-        # self.EthnicityText={}
-        # for key,value in survey_format['ethnicity']['values'].items():
-        #     f1121 = Frame(f113,bg='#3A7FF6')
-        #     Label(f1121, text=value,bg='#3A7FF6').pack(side=LEFT)
-        #     self.EthnicityText[key] = StringVar(value="")
-        #     Label(f1121, textvariable=self.EthnicityText[key],bg='#3A7FF6').pack(side=LEFT)
-        #     f1121.pack(side=TOP)
-        # f113.pack(fill=BOTH, expand=True,side=LEFT)
-
+        #Disabled Stats Table
 
 
         
         f114 = Frame(f11,bg='#3A7FF6')
         Label(f114, text='Disabled',bg='#3A7FF6', font=('Lucida 15')).pack(side=TOP)
-        self.disabled_table = ttk.Treeview(f114, column=("c1", "c2", ), show='headings')
+        self.disabled_table = ttk.Treeview(f114, height=5, column=("c1", "c2", ), show='headings')
 
         self.disabled_table.column(0, anchor=tk.CENTER)
 
@@ -405,23 +361,13 @@ class Admin_Frame(Frame):
 
 
     
-
-        # f114 = Frame(f11, bg="#3A7FF6")
-        # Label(f114, text='Disabled', bg="#3A7FF6", font=('Lucida 15')).pack(side=TOP)
-        # self.DisabledText={}
-        # for key,value in survey_format['disabled']['values'].items():
-        #     f1121 = Frame(f114, bg="#3A7FF6")
-        #     Label(f1121, text=value, bg="#3A7FF6").pack(side=LEFT)
-        #     self.DisabledText[key] = StringVar(value="")
-        #     Label(f1121, textvariable=self.DisabledText[key], bg="#3A7FF6").pack(side=LEFT)
-        #     f1121.pack(side=TOP)
-        # f114.pack(fill=BOTH, expand=True,side=LEFT)
+        #Enjoyed Stats Table
 
 
         
         f115 = Frame(f11,bg='#3A7FF6')
         Label(f115, text='Enjoyed',bg='#3A7FF6', font=('Lucida 15')).pack(side=TOP)
-        self.enjoyed_table = ttk.Treeview(f115, column=("c1", "c2", ), show='headings')
+        self.enjoyed_table = ttk.Treeview(f115, height=5, column=("c1", "c2", ), show='headings')
 
         self.enjoyed_table.column(0, anchor=tk.CENTER)
 
@@ -444,23 +390,12 @@ class Admin_Frame(Frame):
         f115.pack(fill=BOTH, expand=True,side=LEFT)
 
 
-    
-        # f115 = Frame(f11, bg="#3A7FF6")
-        # Label(f115, text='Enjoyed', bg="#3A7FF6", font=('Lucida 15')).pack(side=TOP)
-        # self.EnjoyedText={}
-        # for key,value in survey_format['enjoyed']['values'].items():
-        #     f1121 = Frame(f115, bg="#3A7FF6")
-        #     Label(f1121, text=value, bg="#3A7FF6").pack(side=LEFT)
-        #     self.EnjoyedText[key] = StringVar(value="")
-        #     Label(f1121, textvariable=self.EnjoyedText[key], bg="#3A7FF6").pack(side=LEFT)
-        #     f1121.pack(side=TOP)
-        # f115.pack(fill=BOTH, expand=True,side=LEFT)
-
+        #Curious Stats Table
 
         
         f116 = Frame(f11,bg='#3A7FF6')
         Label(f116, text='Curious',bg='#3A7FF6', font=('Lucida 15')).pack(side=TOP)
-        self.curious_table = ttk.Treeview(f116, column=("c1", "c2", ), show='headings')
+        self.curious_table = ttk.Treeview(f116, height=5, column=("c1", "c2", ), show='headings')
 
         self.curious_table.column(0, anchor=tk.CENTER)
 
@@ -485,22 +420,12 @@ class Admin_Frame(Frame):
 
 
 
-        # f116 = Frame(f11, bg="#3A7FF6")
-        # Label(f116, text='Curious', bg="#3A7FF6", font=('Lucida 15')).pack(side=TOP)
-        # self.CuriousText={}
-        # for key,value in survey_format['curious']['values'].items():
-        #     f1121 = Frame(f116, bg="#3A7FF6")
-        #     Label(f1121, text=value, bg="#3A7FF6").pack(side=LEFT)
-        #     self.CuriousText[key] = StringVar(value="")
-        #     Label(f1121, textvariable=self.CuriousText[key], bg="#3A7FF6").pack(side=LEFT)
-        #     f1121.pack(side=TOP)
-        # f116.pack(fill=BOTH, expand=True,side=LEFT)
-
+        #Science Stats Table
 
         
         f117 = Frame(f11,bg='#3A7FF6')
         Label(f117, text='Want to know more Science',bg='#3A7FF6', font=('Lucida 15')).pack(side=TOP)
-        self.science_table = ttk.Treeview(f117, column=("c1", "c2", ), show='headings')
+        self.science_table = ttk.Treeview(f117, height=5, column=("c1", "c2", ), show='headings')
 
         self.science_table.column(0, anchor=tk.CENTER)
 
@@ -524,16 +449,6 @@ class Admin_Frame(Frame):
 
 
 
-        # f117 = Frame(f11, bg="#3A7FF6")
-        # Label(f117, text='Want to know more Science', bg="#3A7FF6", font=('Lucida 15')).pack(side=TOP)
-        # self.ScienceText={}
-        # for key,value in survey_format['science']['values'].items():
-        #     f1121 = Frame(f117, bg="#3A7FF6")
-        #     Label(f1121, text=value, bg="#3A7FF6").pack(side=LEFT)
-        #     self.ScienceText[key] = StringVar(value="")
-        #     Label(f1121, textvariable=self.ScienceText[key], bg="#3A7FF6").pack(side=LEFT)
-        #     f1121.pack(side=TOP)
-        # f117.pack(fill=BOTH, expand=True,side=LEFT)
 
 
 
@@ -553,27 +468,24 @@ class Admin_Frame(Frame):
 
         f1.pack(fill=BOTH, expand=True)
        
+        ###########################
+        ## Bottom Admin Page NavBar
+        ###########################
 
 
 
-        # self.ValidationText = StringVar(value="")
-        # self.ValidationLabel = Label(self, textvariable=self.ValidationText).pack()
-
-        
         f2 = Frame(self, bg="pink", height=80)
         
         f21 = Frame(f2, bg="pink")
-        self.settingsButton = Button(f21,width=20, font=('Lucida 20'), text="Settings", command=lambda : self.controller.show_frame(Settings_Frame)).pack(fill=BOTH, expand=True, padx=10, pady=10)
-  
+        Button(f21,width=20, font=('Lucida 20'), text="Settings", command=lambda : self.controller.show_frame(Settings_Frame)).pack(fill=BOTH, expand=True, padx=10, pady=10)
         f21.pack(side=LEFT, fill=Y, expand=True)
 
         f22 = Frame(f2, bg="pink")
-
-        self.logoutButton = Button(f22,width=20, font=('Lucida 20'), text="Logout", command=lambda : self.controller.show_frame(Login_Frame)).pack(fill=BOTH, expand=True, padx=10, pady=10)
+        Button(f22,width=20, font=('Lucida 20'), text="Logout", command=lambda : self.controller.show_frame(Login_Frame)).pack(fill=BOTH, expand=True, padx=10, pady=10)
         f22.pack(side=LEFT, fill=Y, expand=True)
 
         f23 = Frame(f2, bg="pink")
-        self.exitButton = Button(f23,width=20, font=('Lucida 20'), text="Exit", command= self.exit_app).pack(fill=BOTH, expand=True, padx=10, pady=10)
+        Button(f23,width=20, font=('Lucida 20'), text="Exit", command= self.exit_app).pack(fill=BOTH, expand=True, padx=10, pady=10)
         f23.pack(side=LEFT, fill=Y, expand=True)
 
         f2.pack(anchor= S,fill=X, expand=True)
@@ -581,7 +493,7 @@ class Admin_Frame(Frame):
 
         self.surveys=[]
 
-        # self.refresh_data()
+        self.refresh_data()
   
 
 
@@ -618,9 +530,6 @@ class Admin_Frame(Frame):
             self.GenderText[key].set(self.db.get_gender_count(key))
             self.gender_table.insert("", "end", values=(value,self.GenderText[key].get(),))
 
-        # for key,value in self.GenderText.items():
-        #     self.GenderText[key].set(self.db.get_gender_count(key))
-
 
 
         self.ethnicity_table.delete(*self.ethnicity_table.get_children())
@@ -628,27 +537,16 @@ class Admin_Frame(Frame):
             self.EthnicityText[key].set(self.db.get_ethnicity_count(key))
             self.ethnicity_table.insert("", "end", values=(value,self.EthnicityText[key].get(),))
 
-
-
-        # for key,value in self.EthnicityText.items():
-        #     self.EthnicityText[key].set(self.db.get_ethnicity_count(key))
-
-
         self.disabled_table.delete(*self.disabled_table.get_children())
         for key,value in survey_format['disabled']['values'].items():
             self.DisabledText[key].set(self.db.get_disabled_count(key))
             self.disabled_table.insert("", "end", values=(value,self.DisabledText[key].get(),))
 
-        # for key,value in self.DisabledText.items():
-        #     self.DisabledText[key].set(self.db.get_disabled_count(key))
 
         self.enjoyed_table.delete(*self.enjoyed_table.get_children())
         for key,value in survey_format['enjoyed']['values'].items():
             self.EnjoyedText[key].set(self.db.get_enjoyed_count(key))
             self.enjoyed_table.insert("", "end", values=(value,self.EnjoyedText[key].get(),))
-
-        # for key,value in self.EnjoyedText.items():
-        #     self.EnjoyedText[key].set(self.db.get_enjoyed_count(key))
 
 
         self.curious_table.delete(*self.curious_table.get_children())
@@ -656,23 +554,14 @@ class Admin_Frame(Frame):
             self.CuriousText[key].set(self.db.get_curious_count(key))
             self.curious_table.insert("", "end", values=(value,self.CuriousText[key].get(),))
 
-        # for key,value in self.CuriousText.items():
-        #     self.CuriousText[key].set(self.db.get_curious_count(key))
 
         self.science_table.delete(*self.science_table.get_children())
         for key,value in survey_format['science']['values'].items():
             self.ScienceText[key].set(self.db.get_science_count(key))
             self.science_table.insert("", "end", values=(value,self.ScienceText[key].get(),))
 
-        # for key,value in self.ScienceText.items():
-        #     self.ScienceText[key].set(self.db.get_science_count(key))
-
 
         
-
-
-
-        # self.surveys.sort(key=lambda e: e[1], reverse=True)
         self.listBox.delete(*self.listBox.get_children())
 
         for i, args in enumerate(self.surveys, start=1):
@@ -715,7 +604,9 @@ class Admin_Frame(Frame):
 
 
 
-
+###########################
+## Settings Frame
+###########################
 
 class Settings_Frame(Frame):
 
@@ -788,6 +679,12 @@ class Settings_Frame(Frame):
         f12.pack(side=LEFT,fill=BOTH, expand=True, padx=10,pady=10)
 
         f1.pack(fill=BOTH, expand=True, padx=10,pady=10)
+
+
+        ###########################
+        ## Bottom Settings Page NavBar
+        ###########################
+
 
 
         f2 = Frame(self, bg="pink", height=80)

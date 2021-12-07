@@ -12,11 +12,10 @@ from pathlib import Path
 
 ASSETS_PATH = Path(__file__).resolve().parent / "assets"
 
-    
-
+###########################
+## Main Tkinter Window
+###########################
 class GUI(tk.Tk):
-
-
 
     BKGR_IMAGE_PATH = 'gui/img/survey_bg.png'
 
@@ -26,8 +25,8 @@ class GUI(tk.Tk):
 
     
         self.db = Database(database_filename)
-        self.minsize(1080, 720)    
-        self.geometry("1080x720")
+        self.minsize(1200, 500)    
+        self.geometry("1200x500")
 
 
         logo = tk.PhotoImage(file=ASSETS_PATH / "iconbitmap.gif")
@@ -44,10 +43,6 @@ class GUI(tk.Tk):
             self.attributes('-fullscreen',True)
         else:
             self.state('zoomed')
-
-
-
-
 
 
 
