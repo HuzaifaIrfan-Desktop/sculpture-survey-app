@@ -54,7 +54,7 @@ class Admin_Panel(Frame):
             self.show_frame(Login_Frame)
             # print('LoginPage') 
 
-        # self.show_frame(Settings_Frame)   
+        self.show_frame(Admin_Frame)   
 
     def show_frame(self,container):
         frame = self.frames[container]
@@ -249,14 +249,18 @@ class Admin_Frame(Frame):
         label = tk.Label(f3,bg='#3A7FF6', text="Surveys", font=("Arial",30)).pack(fill=X, expand=False)
         # create Treeview with 3 columns
         self.listBox = ttk.Treeview(f3, columns=self.headings, show='headings')
-        self.listBox.column(1, anchor=CENTER, stretch=NO, width=50)
+        
         # set column headings
         for n, col in enumerate(self.headings):
             self.listBox.column(n, anchor=CENTER, stretch=NO, width=100)
             self.listBox.heading(col, text=col) 
+        self.listBox.column(1, anchor=CENTER, stretch=NO, width=50)
         self.listBox.column(0, anchor=CENTER, stretch=NO, width=50)  
         self.listBox.column(9, anchor=CENTER, stretch=NO, width=170)   
         self.listBox.pack(fill=BOTH, expand=True, padx=10, pady=10)
+
+        # h=Scrollbar(self.listBox, orient='vertical')
+        # h.pack(side=RIGHT, fill=Y)
         # self.listBox.grid_configure(padx=10, pady=10)
 
 
@@ -266,10 +270,24 @@ class Admin_Frame(Frame):
 
 
 
+
         f1 = Frame(self,bg='#3A7FF6')
 
 
         f11 = Frame(f1,bg='#3A7FF6')
+
+
+        # def prop(n):
+        #     return 360.0 * n / 1000
+
+        # tk.Label(f11, text='Pie Chart').pack()
+        # c = tk.Canvas(f11,width=154, height=154)
+        # c.create_arc((2,2,152,152), fill="#FAF402", outline="#FAF402", start=prop(0), extent = prop(200))
+        # c.create_arc((2,2,152,152), fill="#2BFFF4", outline="#2BFFF4", start=prop(200), extent = prop(400))
+        # c.create_arc((2,2,152,152), fill="#E00022", outline="#E00022", start=prop(600), extent = prop(50))
+        # c.create_arc((2,2,152,152), fill="#7A0871", outline="#7A0871", start=prop(650), extent = prop(200))
+        # c.create_arc((2,2,152,152), fill="#294994", outline="#294994", start=prop(850), extent = prop(150))
+        # c.pack()
 
 
 
@@ -283,76 +301,239 @@ class Admin_Frame(Frame):
 
         f112 = Frame(f11,bg='#3A7FF6')
         Label(f112, text='Gender',bg='#3A7FF6', font=('Lucida 15')).pack(side=TOP)
+        self.gender_table = ttk.Treeview(f112, column=("c1", "c2", ), show='headings')
+
+        self.gender_table.column(0, anchor=tk.CENTER)
+
+        self.gender_table.heading(0, text="Gender")
+        self.gender_table.column(0, anchor=CENTER, stretch=NO, width=100)  
+
+        self.gender_table.column(1, anchor=tk.CENTER)
+
+        self.gender_table.heading(1, text="Count")
+        self.gender_table.column(1, anchor=CENTER, stretch=NO, width=50)  
+        self.gender_table.pack()
+
         self.GenderText={}
+
+        self.gender_table.delete(*self.gender_table.get_children())
         for key,value in survey_format['gender']['values'].items():
-            f1121 = Frame(f112,bg='#3A7FF6')
-            Label(f1121, text=value,bg='#3A7FF6').pack(side=LEFT)
             self.GenderText[key] = StringVar(value="")
-            Label(f1121, textvariable=self.GenderText[key],bg='#3A7FF6').pack(side=LEFT)
-            f1121.pack(side=TOP)
+            self.gender_table.insert("", "end", values=(value,self.GenderText[key].get(),))
+
         f112.pack(fill=BOTH, expand=True,side=LEFT)
+
+
+
+
+        # f112 = Frame(f11,bg='#3A7FF6')
+        # Label(f112, text='Gender',bg='#3A7FF6', font=('Lucida 15')).pack(side=TOP)
+        # self.GenderText={}
+        # for key,value in survey_format['gender']['values'].items():
+        #     f1121 = Frame(f112,bg='#3A7FF6')
+        #     Label(f1121, text=value,bg='#3A7FF6').pack(side=LEFT)
+        #     self.GenderText[key] = StringVar(value="")
+        #     Label(f1121, textvariable=self.GenderText[key],bg='#3A7FF6').pack(side=LEFT)
+        #     f1121.pack(side=TOP)
+        # f112.pack(fill=BOTH, expand=True,side=LEFT)
+
 
 
         f113 = Frame(f11,bg='#3A7FF6')
         Label(f113, text='Ethnicity',bg='#3A7FF6', font=('Lucida 15')).pack(side=TOP)
+        self.ethnicity_table = ttk.Treeview(f113, column=("c1", "c2", ), show='headings')
+
+        self.ethnicity_table.column(0, anchor=tk.CENTER)
+
+        self.ethnicity_table.heading(0, text="Ethnicity")
+        self.ethnicity_table.column(0, anchor=CENTER, stretch=NO, width=100)  
+
+        self.ethnicity_table.column(1, anchor=tk.CENTER)
+
+        self.ethnicity_table.heading(1, text="Count")
+        self.ethnicity_table.column(1, anchor=CENTER, stretch=NO, width=50)  
+        self.ethnicity_table.pack()
+
         self.EthnicityText={}
+
+        self.ethnicity_table.delete(*self.ethnicity_table.get_children())
         for key,value in survey_format['ethnicity']['values'].items():
-            f1121 = Frame(f113,bg='#3A7FF6')
-            Label(f1121, text=value,bg='#3A7FF6').pack(side=LEFT)
             self.EthnicityText[key] = StringVar(value="")
-            Label(f1121, textvariable=self.EthnicityText[key],bg='#3A7FF6').pack(side=LEFT)
-            f1121.pack(side=TOP)
+            self.ethnicity_table.insert("", "end", values=(value,self.EthnicityText[key].get(),))
+
         f113.pack(fill=BOTH, expand=True,side=LEFT)
 
-    
 
-        f114 = Frame(f11, bg="#3A7FF6")
-        Label(f114, text='Disabled', bg="#3A7FF6", font=('Lucida 15')).pack(side=TOP)
+
+        # f113 = Frame(f11,bg='#3A7FF6')
+        # Label(f113, text='Ethnicity',bg='#3A7FF6', font=('Lucida 15')).pack(side=TOP)
+        # self.EthnicityText={}
+        # for key,value in survey_format['ethnicity']['values'].items():
+        #     f1121 = Frame(f113,bg='#3A7FF6')
+        #     Label(f1121, text=value,bg='#3A7FF6').pack(side=LEFT)
+        #     self.EthnicityText[key] = StringVar(value="")
+        #     Label(f1121, textvariable=self.EthnicityText[key],bg='#3A7FF6').pack(side=LEFT)
+        #     f1121.pack(side=TOP)
+        # f113.pack(fill=BOTH, expand=True,side=LEFT)
+
+
+
+        
+        f114 = Frame(f11,bg='#3A7FF6')
+        Label(f114, text='Disabled',bg='#3A7FF6', font=('Lucida 15')).pack(side=TOP)
+        self.disabled_table = ttk.Treeview(f114, column=("c1", "c2", ), show='headings')
+
+        self.disabled_table.column(0, anchor=tk.CENTER)
+
+        self.disabled_table.heading(0, text="Disabled")
+        self.disabled_table.column(0, anchor=CENTER, stretch=NO, width=100)  
+
+        self.disabled_table.column(1, anchor=tk.CENTER)
+
+        self.disabled_table.heading(1, text="Count")
+        self.disabled_table.column(1, anchor=CENTER, stretch=NO, width=50)  
+        self.disabled_table.pack()
+
         self.DisabledText={}
+
+        self.disabled_table.delete(*self.disabled_table.get_children())
         for key,value in survey_format['disabled']['values'].items():
-            f1121 = Frame(f114, bg="#3A7FF6")
-            Label(f1121, text=value, bg="#3A7FF6").pack(side=LEFT)
             self.DisabledText[key] = StringVar(value="")
-            Label(f1121, textvariable=self.DisabledText[key], bg="#3A7FF6").pack(side=LEFT)
-            f1121.pack(side=TOP)
+            self.disabled_table.insert("", "end", values=(value,self.DisabledText[key].get(),))
+
         f114.pack(fill=BOTH, expand=True,side=LEFT)
 
+
     
-        f115 = Frame(f11, bg="#3A7FF6")
-        Label(f115, text='Enjoyed', bg="#3A7FF6", font=('Lucida 15')).pack(side=TOP)
+
+        # f114 = Frame(f11, bg="#3A7FF6")
+        # Label(f114, text='Disabled', bg="#3A7FF6", font=('Lucida 15')).pack(side=TOP)
+        # self.DisabledText={}
+        # for key,value in survey_format['disabled']['values'].items():
+        #     f1121 = Frame(f114, bg="#3A7FF6")
+        #     Label(f1121, text=value, bg="#3A7FF6").pack(side=LEFT)
+        #     self.DisabledText[key] = StringVar(value="")
+        #     Label(f1121, textvariable=self.DisabledText[key], bg="#3A7FF6").pack(side=LEFT)
+        #     f1121.pack(side=TOP)
+        # f114.pack(fill=BOTH, expand=True,side=LEFT)
+
+
+        
+        f115 = Frame(f11,bg='#3A7FF6')
+        Label(f115, text='Enjoyed',bg='#3A7FF6', font=('Lucida 15')).pack(side=TOP)
+        self.enjoyed_table = ttk.Treeview(f115, column=("c1", "c2", ), show='headings')
+
+        self.enjoyed_table.column(0, anchor=tk.CENTER)
+
+        self.enjoyed_table.heading(0, text="Enjoyed")
+        self.enjoyed_table.column(0, anchor=CENTER, stretch=NO, width=100)  
+
+        self.enjoyed_table.column(1, anchor=tk.CENTER)
+
+        self.enjoyed_table.heading(1, text="Count")
+        self.enjoyed_table.column(1, anchor=CENTER, stretch=NO, width=50)  
+        self.enjoyed_table.pack()
+
         self.EnjoyedText={}
+
+        self.enjoyed_table.delete(*self.enjoyed_table.get_children())
         for key,value in survey_format['enjoyed']['values'].items():
-            f1121 = Frame(f115, bg="#3A7FF6")
-            Label(f1121, text=value, bg="#3A7FF6").pack(side=LEFT)
             self.EnjoyedText[key] = StringVar(value="")
-            Label(f1121, textvariable=self.EnjoyedText[key], bg="#3A7FF6").pack(side=LEFT)
-            f1121.pack(side=TOP)
+            self.enjoyed_table.insert("", "end", values=(value,self.EnjoyedText[key].get(),))
+
         f115.pack(fill=BOTH, expand=True,side=LEFT)
 
 
+    
+        # f115 = Frame(f11, bg="#3A7FF6")
+        # Label(f115, text='Enjoyed', bg="#3A7FF6", font=('Lucida 15')).pack(side=TOP)
+        # self.EnjoyedText={}
+        # for key,value in survey_format['enjoyed']['values'].items():
+        #     f1121 = Frame(f115, bg="#3A7FF6")
+        #     Label(f1121, text=value, bg="#3A7FF6").pack(side=LEFT)
+        #     self.EnjoyedText[key] = StringVar(value="")
+        #     Label(f1121, textvariable=self.EnjoyedText[key], bg="#3A7FF6").pack(side=LEFT)
+        #     f1121.pack(side=TOP)
+        # f115.pack(fill=BOTH, expand=True,side=LEFT)
 
-        f116 = Frame(f11, bg="#3A7FF6")
-        Label(f116, text='Curious', bg="#3A7FF6", font=('Lucida 15')).pack(side=TOP)
+
+        
+        f116 = Frame(f11,bg='#3A7FF6')
+        Label(f116, text='Curious',bg='#3A7FF6', font=('Lucida 15')).pack(side=TOP)
+        self.curious_table = ttk.Treeview(f116, column=("c1", "c2", ), show='headings')
+
+        self.curious_table.column(0, anchor=tk.CENTER)
+
+        self.curious_table.heading(0, text="Curious")
+        self.curious_table.column(0, anchor=CENTER, stretch=NO, width=100)  
+
+        self.curious_table.column(1, anchor=tk.CENTER)
+
+        self.curious_table.heading(1, text="Count")
+        self.curious_table.column(1, anchor=CENTER, stretch=NO, width=50)  
+        self.curious_table.pack()
+
         self.CuriousText={}
+
+        self.curious_table.delete(*self.curious_table.get_children())
         for key,value in survey_format['curious']['values'].items():
-            f1121 = Frame(f116, bg="#3A7FF6")
-            Label(f1121, text=value, bg="#3A7FF6").pack(side=LEFT)
             self.CuriousText[key] = StringVar(value="")
-            Label(f1121, textvariable=self.CuriousText[key], bg="#3A7FF6").pack(side=LEFT)
-            f1121.pack(side=TOP)
+            self.curious_table.insert("", "end", values=(value,self.CuriousText[key].get(),))
+
         f116.pack(fill=BOTH, expand=True,side=LEFT)
 
 
-        f117 = Frame(f11, bg="#3A7FF6")
-        Label(f117, text='Want to know more Science', bg="#3A7FF6", font=('Lucida 15')).pack(side=TOP)
+
+
+        # f116 = Frame(f11, bg="#3A7FF6")
+        # Label(f116, text='Curious', bg="#3A7FF6", font=('Lucida 15')).pack(side=TOP)
+        # self.CuriousText={}
+        # for key,value in survey_format['curious']['values'].items():
+        #     f1121 = Frame(f116, bg="#3A7FF6")
+        #     Label(f1121, text=value, bg="#3A7FF6").pack(side=LEFT)
+        #     self.CuriousText[key] = StringVar(value="")
+        #     Label(f1121, textvariable=self.CuriousText[key], bg="#3A7FF6").pack(side=LEFT)
+        #     f1121.pack(side=TOP)
+        # f116.pack(fill=BOTH, expand=True,side=LEFT)
+
+
+        
+        f117 = Frame(f11,bg='#3A7FF6')
+        Label(f117, text='Want to know more Science',bg='#3A7FF6', font=('Lucida 15')).pack(side=TOP)
+        self.science_table = ttk.Treeview(f117, column=("c1", "c2", ), show='headings')
+
+        self.science_table.column(0, anchor=tk.CENTER)
+
+        self.science_table.heading(0, text="Science")
+        self.science_table.column(0, anchor=CENTER, stretch=NO, width=100)  
+
+        self.science_table.column(1, anchor=tk.CENTER)
+
+        self.science_table.heading(1, text="Count")
+        self.science_table.column(1, anchor=CENTER, stretch=NO, width=50)  
+        self.science_table.pack()
+
         self.ScienceText={}
+
+        self.science_table.delete(*self.science_table.get_children())
         for key,value in survey_format['science']['values'].items():
-            f1121 = Frame(f117, bg="#3A7FF6")
-            Label(f1121, text=value, bg="#3A7FF6").pack(side=LEFT)
             self.ScienceText[key] = StringVar(value="")
-            Label(f1121, textvariable=self.ScienceText[key], bg="#3A7FF6").pack(side=LEFT)
-            f1121.pack(side=TOP)
+            self.science_table.insert("", "end", values=(value,self.ScienceText[key].get(),))
+
         f117.pack(fill=BOTH, expand=True,side=LEFT)
+
+
+
+        # f117 = Frame(f11, bg="#3A7FF6")
+        # Label(f117, text='Want to know more Science', bg="#3A7FF6", font=('Lucida 15')).pack(side=TOP)
+        # self.ScienceText={}
+        # for key,value in survey_format['science']['values'].items():
+        #     f1121 = Frame(f117, bg="#3A7FF6")
+        #     Label(f1121, text=value, bg="#3A7FF6").pack(side=LEFT)
+        #     self.ScienceText[key] = StringVar(value="")
+        #     Label(f1121, textvariable=self.ScienceText[key], bg="#3A7FF6").pack(side=LEFT)
+        #     f1121.pack(side=TOP)
+        # f117.pack(fill=BOTH, expand=True,side=LEFT)
 
 
 
@@ -430,23 +611,64 @@ class Admin_Frame(Frame):
         
         self.AverageAgeText.set(self.average_age)
 
-        for key,value in self.GenderText.items():
+
+
+        self.gender_table.delete(*self.gender_table.get_children())
+        for key,value in survey_format['gender']['values'].items():
             self.GenderText[key].set(self.db.get_gender_count(key))
+            self.gender_table.insert("", "end", values=(value,self.GenderText[key].get(),))
 
-        for key,value in self.EthnicityText.items():
+        # for key,value in self.GenderText.items():
+        #     self.GenderText[key].set(self.db.get_gender_count(key))
+
+
+
+        self.ethnicity_table.delete(*self.ethnicity_table.get_children())
+        for key,value in survey_format['ethnicity']['values'].items():
             self.EthnicityText[key].set(self.db.get_ethnicity_count(key))
+            self.ethnicity_table.insert("", "end", values=(value,self.EthnicityText[key].get(),))
 
-        for key,value in self.DisabledText.items():
+
+
+        # for key,value in self.EthnicityText.items():
+        #     self.EthnicityText[key].set(self.db.get_ethnicity_count(key))
+
+
+        self.disabled_table.delete(*self.disabled_table.get_children())
+        for key,value in survey_format['disabled']['values'].items():
             self.DisabledText[key].set(self.db.get_disabled_count(key))
+            self.disabled_table.insert("", "end", values=(value,self.DisabledText[key].get(),))
 
-        for key,value in self.EnjoyedText.items():
+        # for key,value in self.DisabledText.items():
+        #     self.DisabledText[key].set(self.db.get_disabled_count(key))
+
+        self.enjoyed_table.delete(*self.enjoyed_table.get_children())
+        for key,value in survey_format['enjoyed']['values'].items():
             self.EnjoyedText[key].set(self.db.get_enjoyed_count(key))
+            self.enjoyed_table.insert("", "end", values=(value,self.EnjoyedText[key].get(),))
 
-        for key,value in self.CuriousText.items():
+        # for key,value in self.EnjoyedText.items():
+        #     self.EnjoyedText[key].set(self.db.get_enjoyed_count(key))
+
+
+        self.curious_table.delete(*self.curious_table.get_children())
+        for key,value in survey_format['curious']['values'].items():
             self.CuriousText[key].set(self.db.get_curious_count(key))
+            self.curious_table.insert("", "end", values=(value,self.CuriousText[key].get(),))
 
-        for key,value in self.ScienceText.items():
+        # for key,value in self.CuriousText.items():
+        #     self.CuriousText[key].set(self.db.get_curious_count(key))
+
+        self.science_table.delete(*self.science_table.get_children())
+        for key,value in survey_format['science']['values'].items():
             self.ScienceText[key].set(self.db.get_science_count(key))
+            self.science_table.insert("", "end", values=(value,self.ScienceText[key].get(),))
+
+        # for key,value in self.ScienceText.items():
+        #     self.ScienceText[key].set(self.db.get_science_count(key))
+
+
+        
 
 
 
