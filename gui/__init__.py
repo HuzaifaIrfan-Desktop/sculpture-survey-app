@@ -25,8 +25,8 @@ class GUI(tk.Tk):
 
     
         self.db = Database(database_filename)
-        self.minsize(1200, 500)    
-        self.geometry("1200x500")
+        self.minsize(1200, 720)    
+        self.geometry("1200x720")
 
 
         logo = tk.PhotoImage(file=ASSETS_PATH / "iconbitmap.gif")

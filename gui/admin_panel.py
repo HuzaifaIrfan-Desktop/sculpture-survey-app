@@ -77,7 +77,7 @@ class Register_Frame(Frame):
         f11 = Frame(f1)
         
 
-        Label(f11, text="Register", font=("Arial",30)).pack(fill=X, expand=False,padx=20, pady=20) 
+        Label(f11, text="Register", font=("Arial 30 bold")).pack(fill=X, expand=False,padx=20, pady=20) 
 
 
         #password label and password entry box
@@ -152,7 +152,7 @@ class Login_Frame(Frame):
         f11 = Frame(f1)
         
 
-        Label(f11, text="Login", font=("Arial",30)).pack(fill=X, expand=False,padx=20, pady=20)
+        Label(f11, text="Login", font=("Arial 30 bold")).pack(fill=X, expand=False,padx=20, pady=20)
 
 
         #password label and password entry box
@@ -236,7 +236,7 @@ class Admin_Frame(Frame):
         f3 = Frame(self,bg='#3A7FF6')
 
 
-        Label(f3,bg='#3A7FF6', text="Surveys", font=("Arial",30)).pack(fill=X, expand=False)
+        Label(f3,bg='#3A7FF6', text="Surveys", font=("Arial 30 bold")).pack(fill=X, expand=False)
 
         self.listBox = ttk.Treeview(f3, columns=self.headings, show='headings')
         
@@ -623,7 +623,7 @@ class Settings_Frame(Frame):
         Label(self,bg="#3A7FF6", text="Admin Panel", font=('Lucida 15')).pack()
 
 
-        Label(self,bg="#3A7FF6", text="Settings", font=("Arial",30)).pack(fill=X, expand=False)
+        Label(self,bg="#3A7FF6", text="Settings", font=("Arial 30 bold")).pack(fill=X, expand=False)
 
         f1 = Frame(self)
 

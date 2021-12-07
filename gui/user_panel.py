@@ -33,11 +33,11 @@ class User_Panel(Frame):
  
 
          
-        Label(f1,bg="#3A7FF6", text="Singing Sculpture Survey", font=("Arial",30)).pack(side='top')
+        Label(f1,bg="#3A7FF6", text="Singing Sculpture Survey", font=("Arial 30 bold")).pack(side='top')
 
 
 
-        Label(f1, font=('Lucida 15'),bg="#3A7FF6",text="Your feedback helps us improve your experience.").pack()
+        Label(f1, font=('Lucida 15 bold'),bg="#3A7FF6",text="Your feedback helps us improve your experience.").pack()
 
 
 
@@ -50,7 +50,7 @@ class User_Panel(Frame):
 
 
 
-        Label(f11, font=('Lucida 10'),bg="#3A7FF6",text="First Name").pack()
+        Label(f11, font=('Lucida 10 bold'),bg="#3A7FF6",text="First Name").pack()
         self.firstname = StringVar()
         Entry(f11, font=('Lucida 10'), textvariable=self.firstname).pack(pady=(0, 5))
         def firstname_validation(*args):
@@ -66,7 +66,7 @@ class User_Panel(Frame):
 
 
 
-        Label(f11, font=('Lucida 10'),bg="#3A7FF6",text="Last Name").pack()
+        Label(f11, font=('Lucida 10 bold'),bg="#3A7FF6",text="Last Name").pack()
         self.lastname = StringVar()
         Entry(f11, font=('Lucida 10'), textvariable=self.lastname).pack(pady=(0, 5))
 
@@ -82,7 +82,7 @@ class User_Panel(Frame):
         self.lastname.trace("w", lastname_validation)
 
 
-        Label(f11, font=('Lucida 10'),bg="#3A7FF6",text="Age").pack()
+        Label(f11, font=('Lucida 10 bold'),bg="#3A7FF6",text="Age").pack()
         self.age = StringVar()
         Entry(f11, font=('Lucida 10'), textvariable=self.age).pack(pady=(0, 5))
         def age_validation(*args):
@@ -101,7 +101,7 @@ class User_Panel(Frame):
 
 
 
-        Label(f11, font=('Lucida 10'),bg="#3A7FF6",text="Gender").pack()
+        Label(f11, font=('Lucida 10 bold'),bg="#3A7FF6",text="Gender").pack()
         f111 = Frame(f11,bg="#3A7FF6")
         
         self.gender = IntVar()
@@ -112,7 +112,7 @@ class User_Panel(Frame):
 
         
 
-        Label(f11, font=('Lucida 10'),bg="#3A7FF6",text="Ethnicity").pack()
+        Label(f11, font=('Lucida 10 bold'),bg="#3A7FF6",text="Ethnicity").pack()
         self.ethnicity = ttk.Combobox(f11, font=('Lucida 10'), state="readonly")
         self.ethnicity['values']=('---',)
         for key, lst in survey_format['ethnicity']['values'].items():
@@ -126,7 +126,7 @@ class User_Panel(Frame):
             
 
 
-        Label(f11, font=('Lucida 10'),bg="#3A7FF6",text="Disabled").pack()
+        Label(f11, font=('Lucida 10 bold'),bg="#3A7FF6",text="Disabled").pack()
         f112 = Frame(f11,bg="#3A7FF6")
         
         self.disabled = IntVar()
@@ -136,7 +136,7 @@ class User_Panel(Frame):
         f112.pack(pady=(0, 5))
 
 
-        Label(f11, font=('Lucida 10'),bg="#3A7FF6",text="Did you enjoy the sculpture?").pack()
+        Label(f11, font=('Lucida 10 bold'),bg="#3A7FF6",text="Did you enjoy the sculpture?").pack()
         f113 = Frame(f11,bg="#3A7FF6")
         
         self.enjoyed = IntVar()
@@ -148,7 +148,7 @@ class User_Panel(Frame):
 
 
 
-        Label(f11, font=('Lucida 10'),bg="#3A7FF6",text="Are you curious about knowing more?").pack()
+        Label(f11, font=('Lucida 10 bold'),bg="#3A7FF6",text="Are you curious about knowing more?").pack()
         f114 = Frame(f11,bg="#3A7FF6")
         
         self.curious = IntVar()
@@ -158,7 +158,7 @@ class User_Panel(Frame):
         f114.pack(pady=(0, 5))
 
         
-        Label(f11, font=('Lucida 10'),bg="#3A7FF6",text="Do you want to know more science behind it?").pack()
+        Label(f11, font=('Lucida 10 bold'),bg="#3A7FF6",text="Do you want to know more science behind it?").pack()
         f115 = Frame(f11,bg="#3A7FF6")
         
         self.science = IntVar()
