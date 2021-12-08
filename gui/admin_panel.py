@@ -88,12 +88,11 @@ class Register_Frame(Frame):
         Entry(f11, font=('Lucida 15'),
               textvariable=self.retypepassword, show='*').pack()
 
-        validateRegister = partial(
-            self.validateRegister, self.password, self.retypepassword)
+
 
         # Register Button
         Button(f11, font=('Lucida 15'), text="Create Admin Password",
-               command=validateRegister).pack(padx=10, pady=10)
+               command=self.validateRegister).pack(padx=10, pady=10)
 
         self.ValidationText = StringVar(value="")
         Label(f11, font=('Lucida 10'), textvariable=self.ValidationText).pack()
@@ -102,9 +101,9 @@ class Register_Frame(Frame):
 
         f1.place(anchor="c", relx=.5, rely=.5, height=500, width=500)
 
-    def validateRegister(self, passwd, retypepasswd):
-        password = passwd.get()
-        retypepassword = retypepasswd.get()
+    def validateRegister(self):
+        password = self.password.get()
+        retypepassword = self.retypepassword.get()
 
         if len(password) == 0:
             self.ValidationText.set("Password is Required")
@@ -544,8 +543,8 @@ class Admin_Frame(Frame):
         if (file_name == None or file_name == ''):
             return
 
-        if(not file_name.endswith(".csv")):
-            file_name = file_name+'.csv'
+        if(not str(file_name).endswith(".csv")):
+            file_name = str(file_name)+'.csv'
 
         self.save_csv(file_name, self.headings, data)
         # print('Saved Csv')
@@ -610,24 +609,27 @@ class Settings_Frame(Frame):
 
         f111.pack(fill=BOTH, expand=True, padx=40, pady=40)
 
-        f112 = Frame(f11)
-
-        Label(f112, font=('Lucida 20'), fg='red', text="Danger").pack()
-
-        Button(f112, font=('Lucida 20'), bg='red', fg='white', text="Reset Database",
-               command=self.reset_database).pack(side=LEFT, fill=BOTH, expand=True, padx=10, pady=10)
-
-        Button(f112, font=('Lucida 20'), bg='red', fg='white', text="Delete Surveys",
-               command=self.delete_surveys).pack(side=LEFT, fill=BOTH, expand=True, padx=10, pady=10)
-
-        f112.pack(fill=Y, expand=True, padx=10, pady=10)
-
         f11.pack(side=LEFT, fill=BOTH, expand=True, padx=10, pady=10)
 
         f12 = Frame(f1)
 
+
+        f121 = Frame(f12)
+
+        
+
+        Label(f121, font=('Lucida 20'), fg='red', text="Danger").pack()
+
+        Button(f121, font=('Lucida 20'), bg='red', fg='white', text="Reset Database",
+               command=self.reset_database).pack(side=LEFT, padx=10, pady=10)
+
+        Button(f121, font=('Lucida 20'), bg='red', fg='white', text="Delete Surveys",
+               command=self.delete_surveys).pack(side=LEFT, padx=10, pady=10)
+
+        f121.pack(fill=Y, expand=True, padx=10, pady=10)
+
         Button(f12, font=('Lucida 20'), text="Toggle Fullscreen",
-               command=self.toggle_fullscreen).pack(side=LEFT, padx=10, pady=10)
+               command=self.toggle_fullscreen).pack( padx=10, pady=10)
 
         f12.pack(side=LEFT, fill=BOTH, expand=True, padx=10, pady=10)
 
@@ -684,7 +686,7 @@ class Settings_Frame(Frame):
         if self.db.get_settings('fullscreen') == '1':
             self.db.set_settings('fullscreen', '0')
             self.master.master.master.attributes('-fullscreen', False)
-            self.master.master.master.state('zoomed')
+            # self.master.master.master.state('normal')
 
         else:
             self.db.set_settings('fullscreen', '1')

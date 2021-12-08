@@ -41,7 +41,8 @@ class GUI(tk.Tk):
         if self.db.get_settings('fullscreen') == '1':
             self.attributes('-fullscreen', True)
         else:
-            self.state('zoomed')
+            pass
+            # self.state('normal')
 
         self.tabControl = ttk.Notebook(self)
         User_Panel(self, self.tabControl, self.db)
