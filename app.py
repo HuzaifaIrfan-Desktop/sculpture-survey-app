@@ -9,9 +9,10 @@
 #################################################################################
 
 
+if __name__ == '__main__':
 
-from gui import GUI
+    from gui import GUI
 
-survey_app = GUI(database_filename='db.sqlite3')
+    survey_app = GUI(database_filename='db.sqlite3')
 
-survey_app.run_mainloop()
+    survey_app.run_mainloop()

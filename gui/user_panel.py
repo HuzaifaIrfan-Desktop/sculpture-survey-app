@@ -15,7 +15,16 @@ from tkinter import messagebox
 from .survey_format import survey_format
 from pathlib import Path
 
-ASSETS_PATH = Path(__file__).resolve().parent / "assets"
+
+import os
+path = os.getcwd()
+
+# ASSETS_PATH = Path(__file__).resolve().parent / "assets"
+
+
+# ASSETS_PATH = os.path.abspath(os.path.join(os.pardir,'assets'))
+
+ASSETS_PATH = os.path.abspath(os.path.join(path,'gui','assets'))
 
 
 class User_Panel(Frame):
@@ -174,7 +183,7 @@ class User_Panel(Frame):
 
         f3 = Frame(self.user_tab)
 
-        f3.picture = PhotoImage(file=ASSETS_PATH / "survey_bg.png")
+        f3.picture = PhotoImage(file=os.path.join(ASSETS_PATH, "survey_bg.png"))
 
         Label(f3, image=f3.picture).pack(expand=True)
 

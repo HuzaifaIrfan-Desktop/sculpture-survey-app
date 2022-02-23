@@ -16,8 +16,12 @@ from .survey_format import survey_format
 import csv
 
 from pathlib import Path
+import os
 
-ASSETS_PATH = Path(__file__).resolve().parent / "assets"
+# ASSETS_PATH = Path(__file__).resolve().parent / "assets"
+
+
+ASSETS_PATH = os.path.abspath(os.path.join(os.pardir,'assets'))
 
 ###########################
 # Admin Panel Frames Controller
