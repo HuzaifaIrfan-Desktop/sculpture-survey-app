@@ -34,3 +34,4 @@ python app.py
 
 Licensed under the GPL3 License, Copyright 2025 Huzaifa Irfan. [LICENSE](LICENSE)
 
+Last Updated on 2021-12-08
